@@ -1,0 +1,266 @@
+body,html{
+    background-image:url('sky.jpg');
+    font-family:'cursive';
+     margin-top:0;
+     margin-left:0;
+     background-size:1500px 500px;
+ 
+ }
+ .body{
+     position:absolute;
+     height: 500px;
+ 
+ }
+ button:hover{
+   cursor:pointer;  
+ }
+ /*navigation menu*/
+ 
+ 
+ .nav{
+     padding-top:0;
+     margin-top:0;
+     width:100%;
+     height:75px;
+     background-color: bisque;
+     position:static;
+     border-radius:20px;
+     
+ }
+ .navigation_menu li{
+ display:inline;
+ text-decoration:none;
+ width:auto;
+ list-style:none;
+ float:right;
+ font-size:20px;
+ float:right;
+ padding:0px;
+ margin-top:20px;
+ margin-right:40px;
+ font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+ }
+ .navigation_menu li button{
+ font-size: medium;
+ font-family:cursive;
+ width:auto;
+ height:100%;
+ border:none;
+ background-color:bisque ;
+ padding:0;
+ }
+ 
+ .b1:hover{
+     background-color:rgb(177, 171, 171);
+     cursor:pointer;
+ }
+ 
+ 
+ /*Signin page*/
+ 
+ #time{
+     font-weight:400;
+     font-size:20px;
+ }
+ #time:hover{
+     background-color:none;
+ }
+ .LoginButton{
+ text-decoration: none;
+ background-color: rgb(105, 229, 220);
+ margin-left:20px;
+ margin-right:30px;
+ cursor: pointer;
+ height:30px;
+ border:none;
+ border-radius:10px;
+ }
+ #loginLabel{
+     text-align: center;
+     margin-top: 0;
+     margin-bottom: 50px;
+     background-color:black;
+     color:white;
+     border-radius: 15px;
+     font-size: 25px;
+ }
+ 
+ .form1{
+     width:400px;
+     font-size:20px;
+     margin-left:500px;
+     margin-top: 100px;
+     background-color:rgb(136, 151, 162);
+     border-radius: 25px;
+     
+ }
+ .form-box{
+     font-family: Georgia, 'Times New Roman', Times, serif;
+     margin-left:20px;
+ }
+ .submitButton{
+     cursor:pointer;
+     border-radius:10px;
+     margin-left: 40%;
+     font-size: 20px;
+     margin-top: 20px;
+     background-color: darkseagreen;
+ }
+ .inputFields{
+     margin-left:20px;
+     margin-right:20px;
+     float:right;
+ }
+ 
+ 
+ /*  Featured Bids styling here    */
+ 
+ 
+ #sellerCurrentBids{
+ display:none;
+ }
+ .area{
+     margin-left:20px;
+     margin-right:10px;
+     width:500px;
+     height:200px;
+     margin-top:100px;
+     margin-left:25%;
+     border:2px solid black;
+     border-radius:20px;
+     overflow:hidden;
+ 
+ }
+ 
+ .area{
+     display:grid;
+     grid-template-areas:
+                 'a b b '
+                 'c c c ';
+ 
+     grid-gap:0px;
+     
+ }
+ 
+ .bidImageContainer{
+     grid-area:a;
+     background-color:aquamarine;
+     height:120px;
+     width:200px;
+     margin:0;
+     padding:0;
+     overflow:hidden;
+     
+ 
+ }
+ .bidTitleContainer{
+     grid-area:b;
+     background-color:antiquewhite;
+     width:300px;
+     height:auto;
+     margin:0;
+     padding:0;
+ }
+ .bidVariablesContainer{
+     padding-left:10px;
+     grid-area:c;
+     color:rgb(194, 168, 168);
+     background-color: rgb(36, 75, 62);
+     height:auto;
+ }
+ .image{
+     width:260px;
+     height:150px;
+ }
+ /*Current bids menu here*/
+ 
+ /*Bid Details page*/
+ #BidDetails{
+     display:none;
+     margin-top:50px;
+     margin-left:300px;
+     margin-right:300px;
+     padding:0;
+     grid-template:
+           'm n'
+           'o o';
+     border-radius:20px;
+     border:2px solid black;
+     overflow:hidden;
+ }
+ .FullImageContainer{
+     grid-area:m;
+     background-color: blue;
+     width:300px;
+     height:200px;
+     margin:0px;
+ }
+ .FullImage{
+     width:300px;
+     height:200px;
+ }
+ .FullTitleContainer{
+     grid-area:n;
+     margin-left:0px;
+     background-color: rgb(140, 248, 235);
+     margin:0px;
+     width:500px;
+ }
+ .FullVariablesContainer{
+     grid-area:o;
+     float:left;
+     background-color: rgb(255, 208, 79);
+     padding:20px;
+ }
+ .accountInfo{
+     margin-top: 40px;
+     margin-left: 35%;
+ 
+ }
+ #ACinfo{
+     display:none;
+     width:70%;
+     height:500px;
+     
+ }
+ #ACinfo td{
+  font-size:20px;
+  margin:10px;
+  padding:10px;
+ }
+ .c1{
+     background-color: grey;
+     color:beige
+ }
+ .c2{
+     background-color: white;
+ }
+ 
+ /* Bid Add menu*/
+ 
+ #bidAddMenu{
+     background-color:antiquewhite;
+     display:block; 
+     margin-left:30%;
+     margin-right:30%;
+     border-radius:20px;
+     padding-bottom:10px;
+ }
+ #bidAddForm{
+     margin-left:10%;
+ }
+ /* seller info */
+ 
+ #SellerAccountInfo{
+     margin-left:35%;
+     margin-right:20%;
+     margin-top:50px;
+ }
+ #SCinfo{
+     font-size:18px;
+ }
+ 
+ #SCinfo td{
+     padding:10px;
+ }
+ 
