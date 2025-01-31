@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" http-equiv="X-UA-compatible" content="IE-edge" name="viewport" content="width=device-width,initial-scale=1.0">
+        <link rel="stylesheet" href="/public/styles.css">
+        <script src="myscript.js"></script>
+        <script type="text/javascript" >
+            function preventBack()
+            {
+                window.history.forward();
+            }
+             setTimeout("preventBack()", 0);
+             window.onunload=function(){null};
+         </script>
+        <title>
+            Home
+        </title>
+    </head>
+    <body>
+        <div class="nav">
+            <ul class="navigation_menu">
+                <li style="float:right;"><span id="time"></span></li>
+            <li style="margin-right:100px"><button class="b1" onclick="Signout()">Sign out</button></li>
+            <li id="account_info"><button class="b1" onclick="AcInfoDisplay()">Account Info</button></li>
+            <li id="bidsMenu"><button class="b1" onclick="BidsDisplay()">My Bids</button></li>
+            <li id="featuredBids"><button class="b1" onclick="featuredBidsDisplay()">Featured</button></li>
+        </ul>
+        </div>
+        <div id="featuredbids" >
+            <div class="area" id="area1">
+                <div class="bidImageContainer">
+                    <img  class="image" src="backgroundImage1.jpg">
+        </div>
+        <div class="bidTitleContainer">
+            <div class="ProductName" style="margin:10px;"><h4>// testProduct1 //</button></h4></div>
+                <div class="SellerName" style="margin:10px;"> //Anonymous1 seller//</div>
+                <div class="Rating" style="margin:10px;">&#9733; 7.12</div>
+        </div>
+        <div class="bidVariablesContainer">
+            <div class="TimerContainer">
+                <h3>Time remaining: </h3><p>__days:__hrs:__min:__sec</p>
+                </div>
+                <div class="BidAmountContainer">
+                <h3>Current Bid: </h3><p>&#8377 99393</p>
+                </div>
+        </div>
+    </div>
+    <div class="area" id="area2">
+        <div class="bidImageContainer">
+        <img  class="image" src="https://images.pexels.com/photos/159045/the-interior-of-the-repair-interior-design-159045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
+</div>
+<div class="bidTitleContainer">
+    <div class="ProductName" style="margin:10px;"><h4>// testProduct2 //</button></h4></div>
+    <div class="SellerName" style="margin:10px;"> //Anonymous seller2//</div>
+    <div class="Rating" style="margin:10px;">&#9733; 2.122</div>
+</div>
+<div class="bidVariablesContainer"><div class="TimerContainer">
+    <h3>Time remaining: </h3><p>__days:__hrs:__min:__sec</p>
+    </div>
+    <div class="BidAmountContainer">
+    <h3>Current Bid: </h3><p>&#8377 99393</p>
+    </div></div>
+</div> 
+
+<div class="area" id="area3">
+    <div class="bidImageContainer">
+        <img  class="image" src="https://images.pexels.com/photos/159045/the-interior-of-the-repair-interior-design-159045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
+</div>
+<div class="bidTitleContainer">
+    <div class="ProductName" style="margin:10px;"><h4>// testProduct3 //</button></h4></div>
+    <div class="SellerName" style="margin:10px;"> //Anonymous seller3//</div>
+    <div class="Rating" style="margin:10px;">&#9733; 3.12</div>
+</div>
+<div class="bidVariablesContainer"><div class="TimerContainer">
+    <h3>Time remaining: </h3><p>__days:__hrs:__min:__sec</p>
+    </div>
+    <div class="BidAmountContainer">
+    <h3>Current Bid: </h3><p>&#8377 99393</p>
+    </div></div>
+</div>
+<div class="area" id="area4">
+    <div class="bidImageContainer">
+        <img  class="image" src="https://images.pexels.com/photos/159045/the-interior-of-the-repair-interior-design-159045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
+</div>
+<div class="bidTitleContainer">
+    <div class="ProductName" style="margin:10px;"><h4>// testProduct4 //</button></h4></div>
+    <div class="SellerName" style="margin:10px;"> //Anonymous seller4//</div>
+    <div class="Rating" style="margin:10px;">&#9733; 6.19</div>
+</div>
+<div class="bidVariablesContainer"><div class="TimerContainer">
+    <h3>Time remaining: </h3><p>__days:__hrs:__min:__sec</p>
+    </div>
+    <div class="BidAmountContainer">
+    <h3>Current Bid: </h3><p>&#8377 99393</p>
+    </div></div>
+</div>
+
+</div>        
+    </div>
+    <div id="CurrentBids" >
+        <div class="area" id="BidArea1">
+            <div class="bidImageContainer">
+    <img  class="image" src="https://images.pexels.com/photos/159045/the-interior-of-the-repair-interior-design-159045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
+           
+    </div>
+    <div class="bidTitleContainer">
+        <div class="ProductName"><button style="border:none; background:none;" onclick="FullDisplay()">//testProduct1</button></div>
+        <div class="SellerName">&#xf007; //Anonymous Seller1</div>
+        <div class="Rating">&#9733;  3.8</div>
+    </div>
+    <div class="bidVariablesContainer"><div class="TimerContainer">
+        <h3>Time remaining: </h3><p>__days:__hrs:__min:__sec</p>
+        </div>
+        <div class="BidAmountContainer">
+        <h3>Current Bid: </h3><p>&#8377 99393</p>
+        </div></div>
+</div>
+<div class="area" id="BidArea2">
+    <div class="bidImageContainer">
+    <img  class="image" src="https://images.pexels.com/photos/159045/the-interior-of-the-repair-interior-design-159045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
+</div>
+<div class="bidTitleContainer">
+    <div class="ProductName"><button style="border:none; background:none;" onclick="FullDisplay()">//testProduct2</button></div>
+    <div class="SellerName">&#xf007; //Anonymous Seller2</div>
+    <div class="Rating">&#9733;  0.618</div>
+</div>
+<div class="bidVariablesContainer">
+    <div class="TimerContainer">
+        <h3>Time remaining: </h3><p>__days:__hrs:__min:__sec</p>
+        </div>
+        <div class="BidAmountContainer">
+        <h3>Current Bid: </h3><p>&#8377 99393</p>
+        </div>
+</div>
+</div> 
+<div class="area" id="BidArea3">
+<div class="bidImageContainer">
+    <img  class="image" src="https://images.pexels.com/photos/159045/the-interior-of-the-repair-interior-design-159045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
+
+</div>
+<div class="bidTitleContainer">
+    <div class="ProductName"><button style="border:none; background:none;" onclick="FullDisplay()">//testProduct3</button></div>
+    <div class="SellerName">&#xf007; //Anonymous Seller3</div>
+    <div class="Rating">&#9733; 4.234</div>
+</div>
+<div class="bidVariablesContainer"><div class="TimerContainer">
+    <h3>Time remaining: </h3><p>__days:__hrs:__min:__sec</p>
+    </div>
+    <div class="BidAmountContainer">
+    <h3>Current Bid: </h3><p>&#8377 99393</p>
+    </div></div>
+</div>
+<div class="area" id="BidArea4">
+<div class="bidImageContainer">
+    <img  class="image" src="https://images.pexels.com/photos/159045/the-interior-of-the-repair-interior-design-159045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
+
+</div>
+<div class="bidTitleContainer">
+    <div class="ProductName"><button style="border:none; background:none;" onclick="FullDisplay()">//testProduct4</button></div>
+    <div class="SellerName">&#xf007; //Anonymous seller4</div>
+    <div class="Rating">&#9733; U/A</div>
+</div>
+<div class="bidVariablesContainer"><div class="TimerContainer">
+    <h3>Time remaining: </h3><p>__days:__hrs:__min:__sec</p>
+    </div>
+    <div class="BidAmountContainer">
+    <h3>Current Bid: </h3><p>&#8377 99393</p>
+    </div></div>
+</div>   
+</div>     
+<div id="BidDetails">
+    <div class="FullImageContainer">
+        <img  class="FullImage" src="https://images.pexels.com/photos/159045/the-interior-of-the-repair-interior-design-159045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"> 
+    </div>
+    <div class="FullTitleContainer">
+        <div class="ProductName" style="margin:20px;"><h4>// TestProduct //</button></h4></div>
+        <div class="SellerName" style="margin:20px;"> //Anonymous seller//</div>
+        <div class="Rating" style="margin:20px;">&#9733;  9.9999</div>
+    </div>
+
+<div class="FullVariablesContainer">
+<div class="TimerContainer">
+<h3>Time remaining: </h3><p>__days:__hrs:__min:__sec</p>
+</div>
+<div class="BidAmountContainer">
+<h3>Current Bid: </h3><p>&#8377 99393</p>
+</div>
+<div class="BidButton" style="margin-left:40%;margin-bottom:40px">
+    <button style= "background:none;" onclick="PlaceBid()" id="disableButton1">Place a Bid</button>
+   </div>  
+<div id="Placebid" style="display:none">
+    <label>Enter the Bid amount : </label><input type="number" required="required">
+    <button style="background:none">Place the bid</button>
+</div>
+</div>
+</div>
+<div class="accountInfo">
+    <table id="ACinfo">
+        <tr>
+            <td class="c1">Username</td>
+            <td class="c2">adam@6494</td>
+        </tr>
+        <tr>
+            <td class="c1">Password</td>
+            <td class="c2">************</td>
+        </tr>
+        <tr>
+            <td class="c1">First-Name</td>
+            <td class="c2">Adam</td>
+        </tr>
+        <tr>
+        <td class="c1">Last-Name</td>
+        <td class="c2">Smith</td>
+        </tr>
+        <tr>
+            <td class="c1">E-mail </td>
+            <td class="c2">adam4543@yahoo.com</td>
+        </tr>
+        <tr>
+           <td class="c1">Address </td>
+           <td></td>
+        </tr>
+        <tr>
+           <td class="c1">Line1</td> 
+           <td class="c2">House no :23-2-1</td>
+        </tr>
+        <tr>
+            <td class="c1">Line2</td>
+            <td class="c2">Elvin street 9 3/4 Avenue</td>
+        </tr>
+        <tr>
+            <td class="c1">City</td>
+            <td class="c2">Mordor</td>
+        </tr>
+        <tr>
+            <td class="c1">State/UT</td>
+            <td class="c2">Andaman Nicobar Islands</td>
+        </tr>
+        <tr>
+            <td class="c1">Country</td>
+            <td class="c2">Egypt</td>
+        </tr>
+        <tr>
+            <td class="c1">Pincode</td>
+            <td class="c2">108108</td>
+        </tr>
+        <tr>
+            <td class="c1">Phone number</td>
+            <td class="c2">Error404</td>
+        </tr>
+
+    </table>
+</div>
+
+    </body>
+</html>
+    
