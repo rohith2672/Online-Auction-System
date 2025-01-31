@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" http-equiv="X-UA-compatible" content="IE-edge" name="viewport" content="width=device-width,initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <script src="myscript.js"></script>
+        <script type="text/javascript" >
+            function preventBack()
+            {
+                window.history.forward();
+            }
+             setTimeout("preventBack()", 0);
+             window.onunload=function(){null};
+         </script>
+        <title>
+            Home
+        </title>
+    </head>
+    <body>
+        <div class="nav">
+            <ul class="navigation_menu">
+                <li style="float:right;"><span id="time"></span></li>
+            <li style="margin-right:100px"><form action="/signout" method="get"><input type="submit"  value="Signout" style="background-color:rgb(177, 171, 171);
+            border:none;background-color:bisque; cursor:pointer;font-family:cursive;font-size:medium;">
+            </form></li>
+            <li id="credits_info"><button class="b1" id="creditsInfo" >Credits Available</button><br>&nbsp &nbsp <span style="font-size:18px;" id="creditsAvailable" style="display:none;"><%=credits %></span></li>
+            <li id="account_info"><button class="b1" onclick="AcInfoDisplay()">Account Info</button></li>
+            
+            <li id="bidsMenu"><button class="b1" onclick="BidsDisplay()">My Bids</button></li>
+            <li id="featuredBids"><button class="b1" onclick="featuredBidsDisplay()">Featured</button></li>
+        </ul>
+        </div>
+        <div id="featuredbids" >
+            <div class="area">
+                <div class="bidImageContainer">
+                    <img  class="image" src="backgroundImage1.jpg">
+        </div>
+        <div class="bidTitleContainer">
+            <div class="ProductName" style="margin:10px;"><h4><Button onclick="FullDisplay1()"><%=name1%></Button></h4></div>
+                <div class="SellerName" style="margin:10px;"> <%=seller1%></div>
+                <div class="Rating" style="margin:10px;">&#9733; 7.12</div>
+        </div>
+        <div class="bidVariablesContainer">
+            <div class="TimerContainer">
+                <h3>End Time: </h3><p><%=time1%></p>
+                </div>
+                <div class="BidAmountContainer">
+                <h3>Current Bid: </h3><p><%=amount1%></p>
+                </div>
+        </div>
+    </div>
+    <div class="area">
+        <div class="bidImageContainer">
+            <img  class="image" src="backgroundImage1.jpg">
+</div>
+<div class="bidTitleContainer">
+    <div class="ProductName" style="margin:10px;"><h4><Button onclick="FullDisplay2()"><%=name2%></Button></h4></div>
+        <div class="SellerName" style="margin:10px;"> <%=seller2%></div>
+        <div class="Rating" style="margin:10px;">&#9733; 3.232</div>
+</div>
+<div class="bidVariablesContainer">
+    <div class="TimerContainer">
+        <h3>End time : </h3><p><%=time2%></p>
+        </div>
+        <div class="BidAmountContainer">
+        <h3>Current Bid: </h3><p><%=amount2%></p>
+        </div>
+</div>
+</div>
+<div class="area">
+    <div class="bidImageContainer">
+        <img  class="image" src="backgroundImage1.jpg">
+</div>
+<div class="bidTitleContainer">
+<div class="ProductName" style="margin:10px;"><h4><Button onclick="FullDisplay3()"><%=name3%>></Button></h4></div>
+    <div class="SellerName" style="margin:10px;"><%=seller3%></div>
+    <div class="Rating" style="margin:10px;">&#9733; 9.9</div>
+</div>
+<div class="bidVariablesContainer">
+<div class="TimerContainer">
+    <h3>end Time: </h3><p><%=time3%></p>
+    </div>
+    <div class="BidAmountContainer">
+    <h3>Current Bid: </h3><p><%=amount3%></p>
+    </div>
+</div>
+</div>
+
+<div class="area">
+    <div class="bidImageContainer">
+        <img  class="image" src="backgroundImage1.jpg">
+</div>
+<div class="bidTitleContainer">
+<div class="ProductName" style="margin:10px;"><h4><Button onclick="FullDisplay4()"><%=name4%></Button></h4></div>
+    <div class="SellerName" style="margin:10px;"> <%=seller4%></div>
+    <div class="Rating" style="margin:10px;">&#9733; 7.12</div>
+</div>
+<div class="bidVariablesContainer">
+<div class="TimerContainer">
+    <h3>end Time :  </h3><p><%=time4%></p>
+    </div>
+    <div class="BidAmountContainer">
+    <h3>Current Bid: </h3><p><%=amount4%></p>
+    </div>
+</div>
+</div>
+
+
+
+</div>        
+    <div id="CurrentBids" >
+        <div class="area">
+            <div class="bidImageContainer">
+    <img class="image" src="https://images.pexels.com/photos/159045/the-interior-of-the-repair-interior-design-159045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
+           
+    </div>
+    <div class="bidTitleContainer">
+        <div class="ProductName"><button style="border:none; background:none;" >Urban Born Antique Metal Lantern</button></div>
+        <div class="SellerName">&#xf007;seller1 </div>
+    </div>
+    <div class="bidVariablesContainer"><div class="TimerContainer">
+        <h3>End time </h3><p>2022-12-27 10:00:00</p>
+        </div>
+        </div>
+</div>
+</div>     
+<div  id="BidDetails1">
+    <div class="FullImageContainer">
+        <img  class="FullImage" src="https://images.pexels.com/photos/159045/the-interior-of-the-repair-interior-design-159045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"> 
+    </div>
+    <div class="FullTitleContainer">
+        <div class="ProductName" style="margin:20px;"><h4><%=name1%></button></h4></div>
+        <div class="SellerName" style="margin:20px;"><%=seller1%></div>
+        <div class="Rating" style="margin:20px;">&#9733;  9</div>
+    </div>
+
+<div class="FullVariablesContainer">
+<div class="TimerContainer">
+<h3>Time remaining: </h3><p><span id="days1"></span><span id="hours1"></span><span id ="minutes1"></span><span id ="seconds1"></span></p>
+</div><br><br>
+<div class="BidAmountContainer">
+<h3>Current Bid: </h3><p><%=amount1%></p>
+</div>
+<div class="BidButton" style="margin-left:40%;margin-bottom:40px">
+    <button style= "background:none;" onclick="PlaceBid()" id="disableButton1">Place a Bid</button>
+   </div>  
+<div id="Placebid" style="display:none">
+    <form action="/item1Bid" method="post"><label>Enter the Bid amount : </label><input name="item1BidAmount"type="number" required="required">
+    <input style="background:none" type="submit">Place the bid</button></form>
+</div>
+</div>
+</div>
+<div  id="BidDetails2">
+    <div class="FullImageContainer">
+        <img  class="FullImage" src="https://images.pexels.com/photos/159045/the-interior-of-the-repair-interior-design-159045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"> 
+    </div>
+    <div class="FullTitleContainer">
+        <div class="ProductName" style="margin:20px;"><h4><%=name2%></button></h4></div>
+        <div class="SellerName" style="margin:20px;"><%=seller2%></div>
+        <div class="Rating" style="margin:20px;">&#9733;  7.4</div>
+    </div>
+
+<div class="FullVariablesContainer">
+<div class="TimerContainer">
+<h3>Time remaining: </h3><p><span id="days2"></span><span id="hours2"></span><span id ="minutes2"></span><span id ="seconds2"></span></p>
+</div><br><br>
+<div class="BidAmountContainer">
+<h3>Current Bid: </h3><p><%=amount2%></p>
+</div>
+<div class="BidButton" style="margin-left:40%;margin-bottom:40px">
+    <button style= "background:none;" onclick="PlaceBid2()" id="disableButton1">Place a Bid</button>
+   </div>  
+<div id="Placebid2" style="display:none">
+    <form action="/item2Bid" method="post"><label>Enter the Bid amount : </label><input name="item2BidAmount"type="number" required="required">
+        <input style="background:none" type="submit">Place the bid</button></form>
+</div>
+</div>
+</div>
+<div  id="BidDetails3">
+    <div class="FullImageContainer">
+        <img  class="FullImage" src="https://images.pexels.com/photos/159045/the-interior-of-the-repair-interior-design-159045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"> 
+    </div>
+    <div class="FullTitleContainer">
+        <div class="ProductName" style="margin:20px;"><h4><%=name3%></button></h4></div>
+        <div class="SellerName" style="margin:20px;"><%=seller3%></div>
+        <div class="Rating" style="margin:20px;">&#9733;  4.67</div>
+    </div>
+
+<div class="FullVariablesContainer">
+<div class="TimerContainer">
+<h3>Time remaining: </h3><p><span id="days3"></span><span id="hours3"></span><span id ="minutes3"></span><span id ="seconds3"></span></p>
+</div><br><br>
+<div class="BidAmountContainer">
+<h3>Current Bid: </h3><p><%=amount3%></p>
+</div>
+<div class="BidButton" style="margin-left:40%;margin-bottom:40px">
+    <button style= "background:none;" onclick="PlaceBid3()" id="disableButton1">Place a Bid</button>
+   </div>  
+<div id="Placebid3" style="display:none">
+    <form action="/item3Bid" method="post"><label>Enter the Bid amount : </label><input name="item3BidAmount"type="number" required="required">
+        <input style="background:none" type="submit">Place the bid</button></form>
+</div>
+</div>
+</div>
+<div  id="BidDetails4">
+    <div class="FullImageContainer">
+        <img  class="FullImage" src="https://images.pexels.com/photos/159045/the-interior-of-the-repair-interior-design-159045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"> 
+    </div>
+    <div class="FullTitleContainer">
+        <div class="ProductName" style="margin:20px;"><h4><%=name4%></button></h4></div>
+        <div class="SellerName" style="margin:20px;"><%=seller4%></div>
+        <div class="Rating" style="margin:20px;">&#9733;  3.19</div>
+    </div>
+
+<div class="FullVariablesContainer">
+<div class="TimerContainer">
+<h3>Time remaining: </h3><p><span id="days4"></span><span id="hours4"></span><span id ="minutes4"></span><span id ="seconds4"></span></p>
+</div><br><br>
+<div class="BidAmountContainer">
+<h3>Current Bid: </h3><p><%=amount4%></p>
+</div>
+<div class="BidButton" style="margin-left:40%;margin-bottom:40px">
+    <button style= "background:none;" onclick="PlaceBid4()" id="disableButton1">Place a Bid</button>
+   </div>  
+<div id="Placebid4" style="display:none">
+    <form action="/item4Bid" method="post"><label>Enter the Bid amount : </label><input name="item4BidAmount"type="number" required="required">
+        <input style="background:none" type="submit">Place the bid</button></form>
+</div>
+</div>
+</div>
+<div class="accountInfo">
+    <table id="ACinfo" style="display:none">
+        <tr>
+            <td class="c1">Username</td>
+            <td class="c2"><%= username %></td>
+        </tr>
+        <tr>
+            <td class="c1">Password</td>
+            <td class="c2"><%= password %></td>
+        </tr>
+        <tr>
+            <td class="c1">First Name</td>
+            <td class="c2"><%= firstname %></td>
+        </tr>
+        <tr>
+        <td class="c1">Last-Name</td>
+        <td class="c2"><%= lastname %></td>
+        </tr>
+        <tr>
+            <td class="c1">E-mail </td>
+            <td class="c2"><%= email %></td>
+        </tr>
+        <tr>
+           <td class="c1">Address </td>
+           <td></td>
+        </tr>
+        <tr>
+           <td class="c1">Line1</td> 
+           <td class="c2"><%= address1 %></td>
+        </tr>
+        <tr>
+            <td class="c1">Line2</td>
+            <td class="c2"><%= address2 %></td>
+        </tr>
+        <tr>
+            <td class="c1">Line3</td>
+            <td class="c2"><%= address3 %></td>
+        </tr>
+        <tr>
+            <td class="c1">City</td>
+            <td class="c2"><%= city %></td>
+        </tr>
+        <tr>
+            <td class="c1">State/UT</td>
+            <td class="c2"><%= state %></td>
+        </tr>
+        <tr>
+            <td class="c1">Country</td>
+            <td class="c2"><%= country %></td>
+        </tr>
+        <tr>
+            <td class="c1">Pincode</td>
+            <td class="c2"><%= pincode %></td>
+        </tr>
+        <tr>
+            <td class="c1">Phone number</td>
+            <td class="c2"><%= phonenumber %></td>
+        </tr>
+
+    </table>
+</div>
+
+    </body>
+</html>
+    

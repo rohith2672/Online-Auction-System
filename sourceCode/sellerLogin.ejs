@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SellerPage</title>
+        <link rel="stylesheet" href="styles1.css">
+        <script src="myscript.js"></script>
+        <script>
+            let countDownDate=new Date('2022-12-25');
+           var myfunc = setInterval(function() {
+
+var now = new Date().getTime();
+var timeleft = countDownDate - now;
+    
+// Calculating the days, hours, minutes and seconds left
+var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
+var hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
+var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
+    
+// Result is output to the specific element
+document.getElementById("daysM").innerHTML = days + "d "
+document.getElementById("hoursM").innerHTML = hours + "h " 
+document.getElementById("minutesM").innerHTML = minutes + "m " 
+document.getElementById("secondsM").innerHTML = seconds + "s " 
+    
+// Display the message when countdown is over
+if (timeleft < 0) {
+    clearInterval(myfunc);
+    document.getElementById("daysM").innerHTML = ""
+    document.getElementById("hoursM").innerHTML = "" 
+    document.getElementById("minutesM").innerHTML = ""
+    document.getElementById("secondsM").innerHTML = ""
+    document.getElementById("end").innerHTML = "TIME UP!!";
+}
+},500);
+        </script>
+
+    </head>
+    <body>
+        
+        <div class="nav">
+            <ul class="navigation_menu">
+                <li style="float:right;"><span id="time"></span></li>
+                <li style="margin-right:100px"><form action="/signout" method="get"><input type="submit"  value="Signout" style="background-color:rgb(177, 171, 171);
+                    border:none;background-color:bisque; cursor:pointer;font-family:cursive;font-size:medium;">
+                    </form></li>
+            <li id="credits_info"><button class="b1" id="creditsInfo" >Credits Available</button><br>&nbsp &nbsp <span style="font-size:18px;" id="creditsAvailable" style="display:none;"><%= credits %></span></li>
+            <li id="account_info"><button class="b1" onclick="ScInfoDisplay()">Account Info</button></li>
+            
+            <li id="BidAdd" style="display:none"><button class="b1" onclick="AddingBid()"> Add New Item</button></li>
+            <li id="bidsMenu"><button class="b1" onclick="sellerCurrentBidsDisplay()">My Bids</button></li>
+        </ul>
+        </div>
+        <div id="sellerCurrentBids" >
+            <div class="area">
+                <div class="bidImageContainer">
+        <image  class="image" typ="image/jpeg" src="seller4.jpg">
+               
+        </div>
+        <div class="bidTitleContainer">
+            <div class="ProductName"><button style="border:none; background:none; font-size:20px;" ><%= itemName %></button></div><br><br>
+            <div class="SellerName" style="font-size:20px">&#xf007; <%= seller %></div>
+        </div>
+        <div class="bidVariablesContainer"><div class="TimerContainer">
+            <h3>Time remaining:  </h3><p><span id="daysM"></span><span id="hoursM"></span>
+             <span id="minutesM"></span> <span id="secondsM"></span> <span id="end"></span><span id="gettime" ></span></p>
+            
+            </div>
+            <div class="BidAmountContainer">
+            <h3>Current Bid: </h3><p>&#8377 99393</p>
+            </div></div>
+    </div>
+</div> 
+    <div id="bidAddMenu" style="display:none;">
+        <h3 style="text-align:center;margin-bottom:40px;">Enter the Item Details</h3>
+    <form id="bidAddForm" action="/addBid" method="post" enctype="multipart/form-data" >
+     <label>Name</label><input  name="newBidName"   class="inputFields" type="text" required="required"><br><br><br>
+     <label>Bid Id</label><input name="newBidId"  class="inputFields" type="text" required="required"><br><br><br>
+     <label>Product Description</label><input id="newBidDescription" name="newBidDescription" class="inputFields" type="text" ><br><br><hr>
+     <label>Bid Starting Amount</label><input id="newBidStartingAmount" name="newBidAmount" class="inputFields" type="number" required="required"><br><br><hr>
+     <label> End Time</label><input id="newBidEndTime" class="inputFields" name="newBidTime" type="datetime-local" required="required"><br><br><hr>
+     <label>Image</label><input id="newBimage" name="newimage"  class="inputFields" type="file" style="margin-right:10px"><br><br><br>
+     <input type="submit" value="List the Item" id="ItemList" class="submitButton" style="margin-left:35%;">
+    </form>
+    </div>
+    <div id="SellerAccountInfo" style="display:none;" >
+        <table id="SCinfo">
+            <tr>
+                <td class="c1">Username</td>
+                <td class="c2"><%= username %></td>
+            </tr>
+            <tr>
+                <td class="c1">Password</td>
+                <td class="c2"><%= password %></td>
+            </tr>            
+            <tr>
+                <td class="c1">Enterprise-Name</td>
+                <td class="c2"><%= enterpriseName %></td>
+            </tr>
+            <tr>
+                <td class="c1">Business E-mail </td>
+                <td class="c2"><%= email %></td>
+            </tr>
+            
+            <tr>
+                <td class="c1">Telephone number</td>
+                <td class="c2"><%= phonenumber %></td>
+            </tr>
+    
+        </table>
+    </div>
+    </body>
+</html>
