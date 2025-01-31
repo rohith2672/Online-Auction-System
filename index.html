@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            SignIn
+        </title>
+<meta charset="utf-8" http-equiv="X-UA-compatible" content="IE-edge" name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="stylesheet" href="styles.css" >
+<script src="myscript.js"></script>
+    </head>
+    <body><div class="nav">
+            <ul class="navigation_menu" style="display:run-in";>
+                <li style="float:right ;margin-left:40px;"><span id="time"></span></li>
+            <li style="padding-bottom:20px;margin-right:50%;font-family:cursive;font-size: 20px;float:center;"><h5 >\\Sample title\\</h5></li>
+            </ul>
+        </div>
+        <div class="body">
+        <div class="form1">
+           <div id="loginLabel">
+            <label style="margin-left:10px;">Login as </label><br><br>
+            <button class="LoginButton" onclick="LoginForm()">User</button><button class="LoginButton"  onclick="SignUpForm()">Seller</button></div> 
+            <div class="form-box">
+                <form id="loginForm">
+                    <label style="margin-left:35%;">User account</label><br><hr><br>
+                    <label>Username  </label><input id="Uid"  class="inputFields" type="text" required="required" ><br><br>
+                    <label>Password   </label><input id="UPwd"  class="inputFields" type="password" required="required"><br><br><br>
+                    <input type="submit"  onclick="USignin()" value="Login" id='ULoginSubmit' class="submitButton" style="margin-bottom:30px ;">
+                </form>
+                <form  id="signup" style="display:none">
+                    <label style="margin-left:35%;">Seller account</label><br><hr><br>
+                    <label>Username  </label><input id="Sid"  class="inputFields" type="text" required="required" ><br><br>
+                    <label>Password   </label><input id="SPwd"  class="inputFields" type="password" required="required"><br><br><br>
+                    <input type="submit"  onclick="SSignin()" value="Login" id='SLoginSubmit' class="submitButton" style="margin-bottom:30px ;">    
+                </form>
+            </div>
+        </div>
+        </div>
+       
+    </body>
+</html>
