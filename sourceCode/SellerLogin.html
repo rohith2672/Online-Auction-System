@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SellerPage</title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="myscript.js"></script>
+
+    </head>
+    <body>
+        
+        <div class="nav">
+            <ul class="navigation_menu">
+                <li style="float:right;"><span id="time"></span></li>
+            <li style="margin-right:100px"><button class="b1" onclick="Signout()">Sign out</button></li>
+            <li id="credits_info"><button class="b1" id="creditsInfo" onclick="showCredits()">Credits Available</button><br>&nbsp &nbsp <span style="font-size:18px;" id="creditsAvailable" style="display:none;">2000</span></li>
+            <li id="account_info"><button class="b1" onclick="ScInfoDisplay()">Account Info</button></li>
+            
+            <li id="BidAdd"><button class="b1" onclick="AddingBid()"> Add New Item</button></li>
+            <li id="bidsMenu"><button class="b1" onclick="BidsDisplay()">My Bids</button></li>
+            <li id="featuredBids"><button class="b1" onclick="featuredBidsDisplay()">Featured</button></li>
+        </ul>
+        </div>
+    <div id="bidAddMenu" style="display:none;">
+        <h3 style="text-align:center;margin-bottom:40px;">Enter the Item Details</h3>
+    <form id="bidAddForm">
+     <label>Name</label><input id="newBName" class="inputFields" type="text" required="required"><br><br><br>
+     <label>Product Description</label><input id="newBDescription" class="inputFields" type="text" ><br><br><hr>
+     <label>Bid Starting Amount</label><input id="newBStartingAmount" class="inputFields" type="number" required="required"><br><br><hr>
+     <label> Start Time</label><input id="newBStartTime" class="inputFields" type="datetime-local" required="required"><br><br>
+     <label> End Time</label><input id="newBEndTime" class="inputFields" type="datetime-local" required="required"><br><br><hr>
+     <label>Image</label><input id="newBimage"  class="inputFields" type="file" style="margin-right:10px"><br><br><br>
+     <input type="submit" value="List the Item" id="ItemList" class="submitButton" style="margin-left:35%;">
+    </form>
+    </div>
+    <div id="SellerAccountInfo" style="display:none;" >
+        <table id="SCinfo">
+            <tr>
+                <td class="c1">Username</td>
+                <td class="c2">enterprise_am@6494</td>
+            </tr>
+            <tr>
+                <td class="c1">Password</td>
+                <td class="c2">************</td>
+            </tr>            
+            <tr>
+                <td class="c1">Enterprise-Name</td>
+                <td class="c2">sample</td>
+            </tr>
+            <tr>
+                <td class="c1">Business E-mail </td>
+                <td class="c2">adam4543@yahoo.com</td>
+            </tr>
+            <tr>
+               <td class="c1">Address </td>
+               <td></td>
+            </tr>
+            <tr>
+               <td class="c1">Line1</td> 
+               <td class="c2">House no :23-2-1</td>
+            </tr>
+            <tr>
+                <td class="c1">Line2</td>
+                <td class="c2">Elvin street 9 3/4 Avenue</td>
+            </tr>
+            <tr>
+                <td class="c1">City</td>
+                <td class="c2">Mordor</td>
+            </tr>
+            <tr>
+                <td class="c1">State/UT</td>
+                <td class="c2">Andaman Nicobar Islands</td>
+            </tr>
+            <tr>
+                <td class="c1">Country</td>
+                <td class="c2">Egypt</td>
+            </tr>
+            <tr>
+                <td class="c1">Pincode</td>
+                <td class="c2">108108</td>
+            </tr>
+            <tr>
+                <td class="c1">Telephone number</td>
+                <td class="c2">Error404</td>
+            </tr>
+    
+        </table>
+    </div>
+    </body>
+</html>
