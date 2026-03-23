@@ -1,8 +1,10 @@
 C:\Users\rohit\OneDrive\Desktop\Online-Auction-System\src\main\java\com\auction\system\AuctionSystemApplication.java
+C:\Users\rohit\OneDrive\Desktop\Online-Auction-System\src\main\java\com\auction\system\config\WebSocketConfig.java
 C:\Users\rohit\OneDrive\Desktop\Online-Auction-System\src\main\java\com\auction\system\controller\AuctionItemController.java
 C:\Users\rohit\OneDrive\Desktop\Online-Auction-System\src\main\java\com\auction\system\controller\AuthController.java
 C:\Users\rohit\OneDrive\Desktop\Online-Auction-System\src\main\java\com\auction\system\controller\BidController.java
 C:\Users\rohit\OneDrive\Desktop\Online-Auction-System\src\main\java\com\auction\system\controller\GlobalExceptionHandler.java
+C:\Users\rohit\OneDrive\Desktop\Online-Auction-System\src\main\java\com\auction\system\controller\UserController.java
 C:\Users\rohit\OneDrive\Desktop\Online-Auction-System\src\main\java\com\auction\system\dto\AuthRequest.java
 C:\Users\rohit\OneDrive\Desktop\Online-Auction-System\src\main\java\com\auction\system\dto\AuthResponse.java
 C:\Users\rohit\OneDrive\Desktop\Online-Auction-System\src\main\java\com\auction\system\dto\BidRequest.java

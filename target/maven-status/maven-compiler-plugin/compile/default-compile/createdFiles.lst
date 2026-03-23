@@ -1,4 +1,5 @@
 com\auction\system\dto\AuthResponse.class
+com\auction\system\config\WebSocketConfig.class
 com\auction\system\security\JwtService.class
 com\auction\system\model\AuctionItem$AuctionItemBuilder.class
 com\auction\system\service\BidService.class
@@ -9,6 +10,7 @@ com\auction\system\dto\BidResponse$BidResponseBuilder.class
 com\auction\system\dto\RegisterRequest.class
 com\auction\system\model\Bid$BidBuilder.class
 com\auction\system\dto\AuthRequest$AuthRequestBuilder.class
+com\auction\system\controller\UserController.class
 com\auction\system\dto\RegisterRequest$RegisterRequestBuilder.class
 com\auction\system\model\User$UserBuilder.class
 com\auction\system\dto\ItemResponse$ItemResponseBuilder.class

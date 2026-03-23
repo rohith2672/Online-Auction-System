@@ -9,6 +9,7 @@ import com.auction.system.repository.AuctionItemRepository;
 import com.auction.system.repository.BidRepository;
 import com.auction.system.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ public class BidService {
     private final BidRepository bidRepository;
     private final AuctionItemRepository itemRepository;
     private final UserRepository userRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @Transactional
     public BidResponse placeBid(BidRequest request) {
@@ -51,6 +53,14 @@ public class BidService {
             throw new IllegalArgumentException("Bid amount must be higher than the current price");
         }
 
+        if (user.getCredits().compareTo(request.getAmount()) < 0) {
+            throw new IllegalArgumentException("Insufficient credits. Please add credits to your wallet.");
+        }
+
+        // Optional: Deduct credits from user (for a robust system, you would also refund the previous highest bidder)
+        // user.setCredits(user.getCredits().subtract(request.getAmount()));
+        // userRepository.save(user);
+
         // Create and save the bid
         Bid bid = Bid.builder()
                 .item(item)
@@ -63,7 +73,11 @@ public class BidService {
         item.setCurrentPrice(request.getAmount());
         itemRepository.save(item);
 
-        return mapToResponse(savedBid);
+        // Broadcast the new price via WebSocket
+        BidResponse response = mapToResponse(savedBid);
+        messagingTemplate.convertAndSend("/topic/bids/" + item.getId(), response);
+
+        return response;
     }
 
     public List<BidResponse> getBidsForItem(UUID itemId) {
