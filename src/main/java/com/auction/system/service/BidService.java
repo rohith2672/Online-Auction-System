@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -57,11 +56,6 @@ public class BidService {
             throw new IllegalArgumentException("Insufficient credits. Please add credits to your wallet.");
         }
 
-        // Optional: Deduct credits from user (for a robust system, you would also refund the previous highest bidder)
-        // user.setCredits(user.getCredits().subtract(request.getAmount()));
-        // userRepository.save(user);
-
-        // Create and save the bid
         Bid bid = Bid.builder()
                 .item(item)
                 .user(user)
@@ -69,11 +63,9 @@ public class BidService {
                 .build();
         Bid savedBid = bidRepository.save(bid);
 
-        // Update the item's current price
         item.setCurrentPrice(request.getAmount());
         itemRepository.save(item);
 
-        // Broadcast the new price via WebSocket
         BidResponse response = mapToResponse(savedBid);
         messagingTemplate.convertAndSend("/topic/bids/" + item.getId(), response);
 
@@ -84,7 +76,7 @@ public class BidService {
         return bidRepository.findByItemIdOrderByAmountDesc(itemId)
                 .stream()
                 .map(this::mapToResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private BidResponse mapToResponse(Bid bid) {

@@ -5,9 +5,10 @@ import { Client } from '@stomp/stompjs';
 import Layout from '../components/Layout';
 import CountdownTimer from '../components/CountdownTimer';
 import BidHistoryModal from '../components/BidHistoryModal';
+import type { Item } from '../types';
 
 const UserDashboard: React.FC = () => {
-    const [items, setItems] = useState<any[]>([]);
+    const [items, setItems] = useState<Item[]>([]);
     const [credits, setCredits] = useState<number>(0);
     const [username, setUsername] = useState<string>('');
     const [selectedItemId, setSelectedItemId] = useState<string | null>(null);

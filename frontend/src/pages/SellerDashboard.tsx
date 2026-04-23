@@ -3,9 +3,10 @@ import api from '../services/api';
 import Layout from '../components/Layout';
 import CountdownTimer from '../components/CountdownTimer';
 import BidHistoryModal from '../components/BidHistoryModal';
+import type { Item } from '../types';
 
 const SellerDashboard: React.FC = () => {
-    const [items, setItems] = useState<any[]>([]);
+    const [items, setItems] = useState<Item[]>([]);
     const [sellerId, setSellerId] = useState<string | null>(null);
     const [username, setUsername] = useState<string>('');
     const [showForm, setShowForm] = useState(false);
@@ -78,8 +79,7 @@ const SellerDashboard: React.FC = () => {
         }
     };
 
-    const myItems = items;
-    const activeCount = myItems.filter(i => i.status === 'ACTIVE').length;
+    const activeCount = items.filter(i => i.status === 'ACTIVE').length;
 
     return (
         <Layout username={username}>
@@ -87,7 +87,7 @@ const SellerDashboard: React.FC = () => {
                 <div>
                     <h2 style={{ fontSize: '2rem' }}>Your Auctions</h2>
                     <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-                        {myItems.length} total &bull; {activeCount} active
+                        {items.length} total &bull; {activeCount} active
                     </span>
                 </div>
                 <button className="btn-success" onClick={() => setShowForm(!showForm)}>
@@ -139,7 +139,7 @@ const SellerDashboard: React.FC = () => {
             )}
 
             <div className="items-grid">
-                {myItems.map(item => (
+                {items.map(item => (
                     <div key={item.id} className="item-card">
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                             <div className={`badge ${item.status === 'ACTIVE' ? 'badge-active' : ''}`}>
@@ -180,7 +180,7 @@ const SellerDashboard: React.FC = () => {
                 ))}
             </div>
 
-            {myItems.length === 0 && (
+            {items.length === 0 && (
                 <div style={{ textAlign: 'center', padding: '4rem', background: 'var(--surface-color)', borderRadius: '12px', border: '1.5px dashed var(--border-color)' }}>
                     <h3 style={{ color: 'var(--text-secondary)' }}>You haven't listed any auctions yet.</h3>
                 </div>

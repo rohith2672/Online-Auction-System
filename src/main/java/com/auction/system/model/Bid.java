@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -21,9 +21,8 @@ import java.util.UUID;
 public class Bid {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id", updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(updatable = false, nullable = false)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,6 +37,7 @@ public class Bid {
     @Column(nullable = false)
     private BigDecimal amount;
 
+    @CreationTimestamp
     @Column(name = "timestamp", updatable = false)
-    private OffsetDateTime timestamp = OffsetDateTime.now();
+    private OffsetDateTime timestamp;
 }
