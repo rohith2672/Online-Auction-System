@@ -3,6 +3,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import UserDashboard from './pages/UserDashboard';
 import SellerDashboard from './pages/SellerDashboard';
+import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
 function App() {
@@ -13,8 +14,12 @@ function App() {
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/user-dashboard" element={<UserDashboard />} />
-          <Route path="/seller-dashboard" element={<SellerDashboard />} />
+          <Route path="/user-dashboard" element={
+            <ProtectedRoute><UserDashboard /></ProtectedRoute>
+          } />
+          <Route path="/seller-dashboard" element={
+            <ProtectedRoute><SellerDashboard /></ProtectedRoute>
+          } />
         </Routes>
       </div>
     </Router>

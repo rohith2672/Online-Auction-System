@@ -28,31 +28,34 @@ const Register: React.FC = () => {
     return (
         <div className="container">
             <div className="form-card">
-                <h2>Register</h2>
-                {error && <p className="error">{error}</p>}
+                <h1 className="navbar-brand" style={{ fontSize: '2.5rem', marginBottom: '1rem', display: 'block' }}>NexAuction</h1>
+                <h2>Create Account</h2>
+                {error && <div className="alert alert-error">{error}</div>}
                 <form onSubmit={handleRegister}>
                     <div className="form-group">
                         <label>Username</label>
-                        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required placeholder="Choose a username" />
                     </div>
                     <div className="form-group">
-                        <label>Email</label>
-                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                        <label>Email Address</label>
+                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="your@email.com" />
                     </div>
                     <div className="form-group">
-                        <label>Password</label>
-                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                        <label>Secure Password</label>
+                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="••••••••" />
                     </div>
                     <div className="form-group">
-                        <label>Role</label>
+                        <label>Account Role</label>
                         <select value={role} onChange={(e) => setRole(e.target.value)}>
-                            <option value="USER">User (Bidder)</option>
-                            <option value="SELLER">Seller</option>
+                            <option value="USER">Bidder (Buyer)</option>
+                            <option value="SELLER">Auctioneer (Seller)</option>
                         </select>
                     </div>
-                    <button type="submit" className="btn-primary">Register</button>
+                    <button type="submit" className="btn-primary" style={{ marginTop: '1rem' }}>Create Account</button>
                 </form>
-                <p>Already have an account? <Link to="/login">Login here</Link></p>
+                <p style={{ marginTop: '2rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
+                    Already have an account? <Link to="/login" style={{ color: 'var(--accent-primary)' }}>Login here</Link>
+                </p>
             </div>
         </div>
     );

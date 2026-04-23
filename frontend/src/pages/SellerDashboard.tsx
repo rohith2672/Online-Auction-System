@@ -1,135 +1,199 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import api from '../services/api';
-import { useNavigate } from 'react-router-dom';
+import Layout from '../components/Layout';
+import CountdownTimer from '../components/CountdownTimer';
+import BidHistoryModal from '../components/BidHistoryModal';
 
 const SellerDashboard: React.FC = () => {
     const [items, setItems] = useState<any[]>([]);
+    const [sellerId, setSellerId] = useState<string | null>(null);
+    const [username, setUsername] = useState<string>('');
     const [showForm, setShowForm] = useState(false);
-    
-    // Form state
+    const [message, setMessage] = useState<{ text: string; type: 'error' | 'success' } | null>(null);
+    const [historyItem, setHistoryItem] = useState<{ id: string; name: string } | null>(null);
+
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [startingPrice, setStartingPrice] = useState('');
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
     const [imageUrl, setImageUrl] = useState('');
-    const [error, setError] = useState('');
 
-    const navigate = useNavigate();
+    const dismissRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
-        fetchItems();
+        fetchCurrentUser();
     }, []);
 
-    const fetchItems = async () => {
+    useEffect(() => {
+        if (sellerId) fetchItems();
+    }, [sellerId]);
+
+    // Auto-dismiss alerts after 4 s
+    useEffect(() => {
+        if (message) {
+            if (dismissRef.current) clearTimeout(dismissRef.current);
+            dismissRef.current = setTimeout(() => setMessage(null), 4000);
+        }
+    }, [message]);
+
+    const fetchCurrentUser = async () => {
         try {
-            const response = await api.get('/items');
-            // Depending on your requirements, you might want to filter by sellerId here
-            // if the backend doesn't already do it for the seller view.
-            setItems(response.data);
-        } catch (error) {
-            console.error('Failed to fetch items', error);
+            const res = await api.get('/users/me');
+            setSellerId(res.data.id);
+            setUsername(res.data.username);
+        } catch (err) {
+            console.error('Failed to fetch current user', err);
         }
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/login');
+    const fetchItems = async () => {
+        try {
+            const res = await api.get('/items');
+            // Only show items listed by this seller
+            setItems(res.data.filter((item: any) => item.sellerId === sellerId));
+        } catch (err) {
+            console.error('Failed to fetch items', err);
+        }
     };
 
     const handleAddItem = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError('');
         try {
-            const newItem = {
+            await api.post('/items', {
                 name,
                 description,
                 startingPrice: parseFloat(startingPrice),
-                // Format datetime-local to ISO-8601 with Offset for Spring Boot
                 startTime: new Date(startTime).toISOString(),
                 endTime: new Date(endTime).toISOString(),
-                imageUrl
-            };
-            await api.post('/items', newItem);
+                imageUrl,
+            });
             setShowForm(false);
-            // Reset form
-            setName('');
-            setDescription('');
-            setStartingPrice('');
-            setStartTime('');
-            setEndTime('');
-            setImageUrl('');
-            
-            // Refresh list
+            setName(''); setDescription(''); setStartingPrice('');
+            setStartTime(''); setEndTime(''); setImageUrl('');
+            setMessage({ text: 'Auction listed successfully!', type: 'success' });
             fetchItems();
         } catch (err: any) {
-            console.error(err);
-            setError(err.response?.data?.error || 'Failed to add item. Ensure all fields are filled correctly.');
+            setMessage({ text: err.response?.data?.error || 'Failed to add item. Check all fields.', type: 'error' });
         }
     };
 
+    const myItems = items;
+    const activeCount = myItems.filter(i => i.status === 'ACTIVE').length;
+
     return (
-        <div className="dashboard">
-            <header className="nav">
-                <h2>Seller Dashboard</h2>
-                <button onClick={handleLogout} className="btn-secondary">Logout</button>
-            </header>
-            
-            <div className="actions">
-                <button className="btn-primary" onClick={() => setShowForm(!showForm)}>
-                    {showForm ? 'Cancel' : 'Add New Item'}
+        <Layout username={username}>
+            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+                <div>
+                    <h2 style={{ fontSize: '2rem' }}>Your Auctions</h2>
+                    <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                        {myItems.length} total &bull; {activeCount} active
+                    </span>
+                </div>
+                <button className="btn-success" onClick={() => setShowForm(!showForm)}>
+                    {showForm ? 'Cancel' : '+ Create New Auction'}
                 </button>
-            </div>
+            </header>
+
+            {message && (
+                <div className={`alert ${message.type === 'error' ? 'alert-error' : 'alert-success'}`}>
+                    {message.text}
+                </div>
+            )}
 
             {showForm && (
-                <div className="form-card" style={{ marginBottom: '2rem', maxWidth: '600px' }}>
-                    <h3>Create Auction Item</h3>
-                    {error && <p className="error">{error}</p>}
-                    <form onSubmit={handleAddItem}>
+                <div className="form-card" style={{ marginBottom: '3rem', maxWidth: '100%' }}>
+                    <h3>List a New Item</h3>
+                    <form onSubmit={handleAddItem} style={{ textAlign: 'left' }}>
                         <div className="form-group">
                             <label>Item Name</label>
-                            <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+                            <input type="text" value={name} onChange={e => setName(e.target.value)} required placeholder="e.g. Rare Comic Book" />
                         </div>
                         <div className="form-group">
                             <label>Description</label>
-                            <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} required />
+                            <input type="text" value={description} onChange={e => setDescription(e.target.value)} required placeholder="Brief description..." />
                         </div>
-                        <div className="form-group">
-                            <label>Starting Price ($)</label>
-                            <input type="number" step="0.01" value={startingPrice} onChange={(e) => setStartingPrice(e.target.value)} required />
+                        <div style={{ display: 'flex', gap: '1rem' }}>
+                            <div className="form-group" style={{ flex: 1 }}>
+                                <label>Starting Price ($)</label>
+                                <input type="number" step="0.01" value={startingPrice} onChange={e => setStartingPrice(e.target.value)} required placeholder="0.00" />
+                            </div>
+                            <div className="form-group" style={{ flex: 1 }}>
+                                <label>Image URL (optional)</label>
+                                <input type="url" value={imageUrl} onChange={e => setImageUrl(e.target.value)} placeholder="https://..." />
+                            </div>
                         </div>
-                        <div className="form-group">
-                            <label>Start Time</label>
-                            <input type="datetime-local" value={startTime} onChange={(e) => setStartTime(e.target.value)} required />
+                        <div style={{ display: 'flex', gap: '1rem' }}>
+                            <div className="form-group" style={{ flex: 1 }}>
+                                <label>Auction Starts</label>
+                                <input type="datetime-local" value={startTime} onChange={e => setStartTime(e.target.value)} required />
+                            </div>
+                            <div className="form-group" style={{ flex: 1 }}>
+                                <label>Auction Ends</label>
+                                <input type="datetime-local" value={endTime} onChange={e => setEndTime(e.target.value)} required />
+                            </div>
                         </div>
-                        <div className="form-group">
-                            <label>End Time</label>
-                            <input type="datetime-local" value={endTime} onChange={(e) => setEndTime(e.target.value)} required />
-                        </div>
-                        <div className="form-group">
-                            <label>Image URL</label>
-                            <input type="url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://example.com/image.jpg" />
-                        </div>
-                        <button type="submit" className="btn-primary">Submit Item</button>
+                        <button type="submit" className="btn-primary" style={{ marginTop: '1rem' }}>Launch Auction</button>
                     </form>
                 </div>
             )}
 
             <div className="items-grid">
-                {items.map(item => (
+                {myItems.map(item => (
                     <div key={item.id} className="item-card">
-                        {item.imageUrl && <img src={item.imageUrl} alt={item.name} style={{width: '100%', height: '200px', objectFit: 'cover', borderRadius: '4px'}} />}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                            <div className={`badge ${item.status === 'ACTIVE' ? 'badge-active' : ''}`}>
+                                {item.status === 'ACTIVE' && <span className="live-dot" />}
+                                {item.status}
+                            </div>
+                            <CountdownTimer endTime={item.endTime} />
+                        </div>
+
+                        {item.imageUrl ? (
+                            <img src={item.imageUrl} alt={item.name} />
+                        ) : (
+                            <div style={{ width: '100%', height: '200px', background: '#0f172a', borderRadius: '8px', marginBottom: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#475569', fontWeight: 700 }}>NO IMAGE</div>
+                        )}
+
                         <h3>{item.name}</h3>
                         <p>{item.description}</p>
-                        <p>Starting Price: ${item.startingPrice}</p>
-                        <p>Current Bid: ${item.currentPrice}</p>
-                        <p>Ends: {new Date(item.endTime).toLocaleString()}</p>
-                        <p>Status: <strong>{item.status}</strong></p>
+
+                        <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
+                            <div>
+                                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase' }}>Start Price</span>
+                                <div style={{ fontWeight: 700 }}>${Number(item.startingPrice).toFixed(2)}</div>
+                            </div>
+                            <div style={{ textAlign: 'right' }}>
+                                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-success)', textTransform: 'uppercase' }}>Current Bid</span>
+                                <div className="price-tag" style={{ margin: 0, fontSize: '1.5rem' }}>${Number(item.currentPrice).toFixed(2)}</div>
+                            </div>
+                        </div>
+
+                        <button
+                            className="btn-secondary"
+                            style={{ fontSize: '0.85rem', padding: '0.5rem', width: '100%', marginTop: 'auto' }}
+                            onClick={() => setHistoryItem({ id: item.id, name: item.name })}
+                        >
+                            View Bid History
+                        </button>
                     </div>
                 ))}
-                {items.length === 0 && <p>No items listed yet.</p>}
             </div>
-        </div>
+
+            {myItems.length === 0 && (
+                <div style={{ textAlign: 'center', padding: '4rem', background: 'var(--surface-color)', borderRadius: '12px', border: '1.5px dashed var(--border-color)' }}>
+                    <h3 style={{ color: 'var(--text-secondary)' }}>You haven't listed any auctions yet.</h3>
+                </div>
+            )}
+
+            {historyItem && (
+                <BidHistoryModal
+                    itemId={historyItem.id}
+                    itemName={historyItem.name}
+                    onClose={() => setHistoryItem(null)}
+                />
+            )}
+        </Layout>
     );
 };
 
