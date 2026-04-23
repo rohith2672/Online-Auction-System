@@ -1,0 +1,4 @@
+com\auction\system\security\JwtServiceTest.class
+com\auction\system\service\BidServiceTest.class
+com\auction\system\service\AuthServiceTest.class
+com\auction\system\service\AuctionItemServiceTest.class
