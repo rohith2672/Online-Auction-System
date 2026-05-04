@@ -18,9 +18,12 @@ const UserDashboard: React.FC = () => {
     const [message, setMessage] = useState<{ text: string, type: 'error' | 'success' } | null>(null);
     const [search, setSearch] = useState('');
     const [historyItem, setHistoryItem] = useState<{ id: string; name: string } | null>(null);
+    const [loadingItems, setLoadingItems] = useState(true);
+    const [submittingBid, setSubmittingBid] = useState(false);
+    const [submittingCredits, setSubmittingCredits] = useState(false);
 
     const clientRef = useRef<Client | null>(null);
-    const subscriptionsRef = useRef<Map<string, any>>(new Map());
+    const subscriptionsRef = useRef<Map<string, { unsubscribe: () => void }>>(new Map());
     const dismissRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
@@ -34,7 +37,11 @@ const UserDashboard: React.FC = () => {
         client.activate();
         clientRef.current = client;
 
-        return () => { clientRef.current?.deactivate(); };
+        return () => {
+            subscriptionsRef.current.forEach(sub => sub.unsubscribe());
+            subscriptionsRef.current.clear();
+            clientRef.current?.deactivate();
+        };
     }, []);
 
     useEffect(() => {
@@ -51,6 +58,10 @@ const UserDashboard: React.FC = () => {
                 }
             });
         }
+        return () => {
+            subscriptionsRef.current.forEach(sub => sub.unsubscribe());
+            subscriptionsRef.current.clear();
+        };
     }, [items]);
 
     // Auto-dismiss alerts after 4 s
@@ -77,19 +88,25 @@ const UserDashboard: React.FC = () => {
             setItems(res.data);
         } catch (err) {
             console.error('Failed to fetch items', err);
+        } finally {
+            setLoadingItems(false);
         }
     };
 
     const handleAddCredits = async (e: React.FormEvent) => {
         e.preventDefault();
+        setSubmittingCredits(true);
         try {
             const res = await api.post('/users/add-credits', { amount: parseFloat(creditAmount) });
             setCredits(res.data.credits);
             setShowCreditForm(false);
             setCreditAmount('');
             setMessage({ text: 'Credits added successfully!', type: 'success' });
-        } catch (err: any) {
-            setMessage({ text: err.response?.data?.error || 'Failed to add credits', type: 'error' });
+        } catch (err: unknown) {
+            const error = err as { response?: { data?: { error?: string } } };
+            setMessage({ text: error.response?.data?.error || 'Failed to add credits', type: 'error' });
+        } finally {
+            setSubmittingCredits(false);
         }
     };
 
@@ -104,14 +121,18 @@ const UserDashboard: React.FC = () => {
             setMessage({ text: 'Insufficient credits!', type: 'error' });
             return;
         }
+        setSubmittingBid(true);
         try {
             await api.post('/bids', { itemId, amount });
             setMessage({ text: 'Bid placed successfully!', type: 'success' });
             setBidAmount('');
             setSelectedItemId(null);
             fetchUser();
-        } catch (err: any) {
-            setMessage({ text: err.response?.data?.error || 'Failed to place bid', type: 'error' });
+        } catch (err: unknown) {
+            const error = err as { response?: { data?: { error?: string } } };
+            setMessage({ text: error.response?.data?.error || 'Failed to place bid', type: 'error' });
+        } finally {
+            setSubmittingBid(false);
         }
     };
 
@@ -151,7 +172,9 @@ const UserDashboard: React.FC = () => {
                                 placeholder="Enter Amount ($)" required
                             />
                         </div>
-                        <button type="submit" className="btn-success" style={{ padding: '0 2rem' }}>Add Credits</button>
+                        <button type="submit" className="btn-success" style={{ padding: '0 2rem' }} disabled={submittingCredits}>
+                            {submittingCredits ? 'Adding...' : 'Add Credits'}
+                        </button>
                     </form>
                 </div>
             )}
@@ -162,77 +185,87 @@ const UserDashboard: React.FC = () => {
                 </div>
             )}
 
-            <div className="items-grid">
-                {filteredItems.map(item => (
-                    <div key={item.id} className="item-card">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                            <div className={`badge ${item.status === 'ACTIVE' ? 'badge-active' : ''}`}>
-                                {item.status === 'ACTIVE' && <span className="live-dot" />}
-                                {item.status}
-                            </div>
-                            <CountdownTimer endTime={item.endTime} />
-                        </div>
-
-                        {item.imageUrl ? (
-                            <img src={item.imageUrl} alt={item.name} />
-                        ) : (
-                            <div style={{ width: '100%', height: '200px', background: '#0f172a', borderRadius: '8px', marginBottom: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#475569', fontWeight: 700 }}>NO IMAGE</div>
-                        )}
-
-                        <h3>{item.name}</h3>
-                        <p>{item.description}</p>
-
-                        <div style={{ marginBottom: '1.5rem' }}>
-                            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase' }}>Current Bid</span>
-                            <div className="price-tag">${Number(item.currentPrice).toFixed(2)}</div>
-                            <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                                Seller: {item.sellerUsername}
-                            </span>
-                        </div>
-
-                        <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.75rem' }}>
-                            <button
-                                className="btn-secondary"
-                                style={{ flex: 1, fontSize: '0.85rem', padding: '0.5rem' }}
-                                onClick={() => setHistoryItem({ id: item.id, name: item.name })}
-                            >
-                                View Bids
-                            </button>
-                        </div>
-
-                        {selectedItemId === item.id ? (
-                            <form onSubmit={(e) => handlePlaceBid(e, item.id, item.currentPrice)}>
-                                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                    <input
-                                        type="number" step="0.01" value={bidAmount}
-                                        onChange={e => setBidAmount(e.target.value)}
-                                        placeholder={`Min $${(Number(item.currentPrice) + 0.01).toFixed(2)}`}
-                                        required autoFocus style={{ flex: 1 }}
-                                    />
-                                    <button type="submit" className="btn-success">Bid</button>
-                                    <button type="button" onClick={() => setSelectedItemId(null)} className="btn-secondary">✕</button>
-                                </div>
-                            </form>
-                        ) : (
-                            <button
-                                className="btn-primary"
-                                onClick={() => { setSelectedItemId(item.id); setBidAmount(''); setMessage(null); }}
-                                disabled={item.status !== 'ACTIVE'}
-                                style={{ marginTop: 'auto' }}
-                            >
-                                {item.status === 'ACTIVE' ? 'Place Your Bid' : 'Auction Closed'}
-                            </button>
-                        )}
-                    </div>
-                ))}
-            </div>
-
-            {filteredItems.length === 0 && (
-                <div style={{ textAlign: 'center', padding: '4rem', background: 'var(--surface-color)', borderRadius: '12px', border: '1.5px dashed var(--border-color)' }}>
-                    <h3 style={{ color: 'var(--text-secondary)' }}>
-                        {search ? 'No auctions match your search.' : 'No Active Auctions Currently'}
-                    </h3>
+            {loadingItems ? (
+                <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-secondary)' }}>
+                    Loading auctions...
                 </div>
+            ) : (
+                <>
+                    <div className="items-grid">
+                        {filteredItems.map(item => (
+                            <div key={item.id} className="item-card">
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                                    <div className={`badge ${item.status === 'ACTIVE' ? 'badge-active' : ''}`}>
+                                        {item.status === 'ACTIVE' && <span className="live-dot" />}
+                                        {item.status}
+                                    </div>
+                                    <CountdownTimer endTime={item.endTime} />
+                                </div>
+
+                                {item.imageUrl ? (
+                                    <img src={item.imageUrl} alt={item.name} />
+                                ) : (
+                                    <div style={{ width: '100%', height: '200px', background: '#0f172a', borderRadius: '8px', marginBottom: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#475569', fontWeight: 700 }}>NO IMAGE</div>
+                                )}
+
+                                <h3>{item.name}</h3>
+                                <p>{item.description}</p>
+
+                                <div style={{ marginBottom: '1.5rem' }}>
+                                    <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase' }}>Current Bid</span>
+                                    <div className="price-tag">${Number(item.currentPrice).toFixed(2)}</div>
+                                    <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                                        Seller: {item.sellerUsername}
+                                    </span>
+                                </div>
+
+                                <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                                    <button
+                                        className="btn-secondary"
+                                        style={{ flex: 1, fontSize: '0.85rem', padding: '0.5rem' }}
+                                        onClick={() => setHistoryItem({ id: item.id, name: item.name })}
+                                    >
+                                        View Bids
+                                    </button>
+                                </div>
+
+                                {selectedItemId === item.id ? (
+                                    <form onSubmit={(e) => handlePlaceBid(e, item.id, item.currentPrice)}>
+                                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                            <input
+                                                type="number" step="0.01" value={bidAmount}
+                                                onChange={e => setBidAmount(e.target.value)}
+                                                placeholder={`Min $${(Number(item.currentPrice) + 0.01).toFixed(2)}`}
+                                                required autoFocus style={{ flex: 1 }}
+                                            />
+                                            <button type="submit" className="btn-success" disabled={submittingBid}>
+                                                {submittingBid ? '...' : 'Bid'}
+                                            </button>
+                                            <button type="button" onClick={() => setSelectedItemId(null)} className="btn-secondary">✕</button>
+                                        </div>
+                                    </form>
+                                ) : (
+                                    <button
+                                        className="btn-primary"
+                                        onClick={() => { setSelectedItemId(item.id); setBidAmount(''); setMessage(null); }}
+                                        disabled={item.status !== 'ACTIVE'}
+                                        style={{ marginTop: 'auto' }}
+                                    >
+                                        {item.status === 'ACTIVE' ? 'Place Your Bid' : 'Auction Closed'}
+                                    </button>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+
+                    {filteredItems.length === 0 && (
+                        <div style={{ textAlign: 'center', padding: '4rem', background: 'var(--surface-color)', borderRadius: '12px', border: '1.5px dashed var(--border-color)' }}>
+                            <h3 style={{ color: 'var(--text-secondary)' }}>
+                                {search ? 'No auctions match your search.' : 'No Active Auctions Currently'}
+                            </h3>
+                        </div>
+                    )}
+                </>
             )}
 
             {historyItem && (

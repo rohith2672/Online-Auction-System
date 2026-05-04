@@ -9,6 +9,7 @@ import com.auction.system.repository.AuctionItemRepository;
 import com.auction.system.repository.BidRepository;
 import com.auction.system.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BidService {
 
     private final BidRepository bidRepository;
@@ -37,7 +39,8 @@ public class BidService {
             throw new IllegalArgumentException("Only standard users can place bids");
         }
 
-        AuctionItem item = itemRepository.findById(request.getItemId())
+        // Pessimistic lock prevents concurrent bids from racing on the same item
+        AuctionItem item = itemRepository.findByIdForUpdate(request.getItemId())
                 .orElseThrow(() -> new IllegalArgumentException("Item not found"));
 
         if (item.getStatus() != AuctionItem.Status.ACTIVE) {
@@ -56,6 +59,10 @@ public class BidService {
             throw new IllegalArgumentException("Insufficient credits. Please add credits to your wallet.");
         }
 
+        // Deduct credits before saving the bid
+        user.setCredits(user.getCredits().subtract(request.getAmount()));
+        userRepository.save(user);
+
         Bid bid = Bid.builder()
                 .item(item)
                 .user(user)
@@ -65,6 +72,8 @@ public class BidService {
 
         item.setCurrentPrice(request.getAmount());
         itemRepository.save(item);
+
+        log.info("Bid placed: user={} item={} amount={}", username, item.getId(), request.getAmount());
 
         BidResponse response = mapToResponse(savedBid);
         messagingTemplate.convertAndSend("/topic/bids/" + item.getId(), response);

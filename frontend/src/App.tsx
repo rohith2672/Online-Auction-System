@@ -15,10 +15,10 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/user-dashboard" element={
-            <ProtectedRoute><UserDashboard /></ProtectedRoute>
+            <ProtectedRoute allowedRole="USER"><UserDashboard /></ProtectedRoute>
           } />
           <Route path="/seller-dashboard" element={
-            <ProtectedRoute><SellerDashboard /></ProtectedRoute>
+            <ProtectedRoute allowedRole="SELLER"><SellerDashboard /></ProtectedRoute>
           } />
         </Routes>
       </div>

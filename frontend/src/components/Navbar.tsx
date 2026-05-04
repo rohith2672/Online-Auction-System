@@ -12,6 +12,7 @@ const Navbar: React.FC<NavbarProps> = ({ credits, showWallet = false, username }
 
     const handleLogout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('role');
         navigate('/login');
     };
 
