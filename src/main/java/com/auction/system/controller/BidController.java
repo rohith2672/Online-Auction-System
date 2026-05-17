@@ -4,6 +4,7 @@ import com.auction.system.dto.BidRequest;
 import com.auction.system.dto.BidResponse;
 import com.auction.system.service.BidService;
 import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class BidController {
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<BidResponse> placeBid(@RequestBody BidRequest request) {
+    public ResponseEntity<BidResponse> placeBid(@Valid @RequestBody BidRequest request) {
         return ResponseEntity.ok(bidService.placeBid(request));
     }
 

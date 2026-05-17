@@ -17,15 +17,15 @@ interface Props {
 const BidHistoryModal: React.FC<Props> = ({ itemId, itemName, onClose }) => {
     const [bids, setBids] = useState<Bid[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         api.get(`/bids/item/${itemId}`)
             .then(res => setBids(res.data))
-            .catch(console.error)
+            .catch(() => setError('Failed to load bid history. Please try again.'))
             .finally(() => setLoading(false));
     }, [itemId]);
 
-    // Close on backdrop click
     const handleBackdrop = (e: React.MouseEvent<HTMLDivElement>) => {
         if (e.target === e.currentTarget) onClose();
     };
@@ -41,6 +41,8 @@ const BidHistoryModal: React.FC<Props> = ({ itemId, itemName, onClose }) => {
 
                 {loading ? (
                     <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)' }}>Loading...</div>
+                ) : error ? (
+                    <div className="alert alert-error" style={{ margin: '1rem' }}>{error}</div>
                 ) : bids.length === 0 ? (
                     <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)' }}>No bids placed yet.</div>
                 ) : (

@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +32,13 @@ public class AuctionItemService {
             throw new IllegalArgumentException("Only sellers can create auction items");
         }
 
+        if (request.getEndTime().isBefore(request.getStartTime())) {
+            throw new IllegalArgumentException("End time must be after start time");
+        }
+        if (request.getEndTime().isBefore(OffsetDateTime.now())) {
+            throw new IllegalArgumentException("End time must be in the future");
+        }
+
         AuctionItem item = AuctionItem.builder()
                 .seller(seller)
                 .name(request.getName())
@@ -49,6 +57,16 @@ public class AuctionItemService {
 
     public List<ItemResponse> getAllActiveItems() {
         return itemRepository.findByStatus(AuctionItem.Status.ACTIVE)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    public List<ItemResponse> getMyItems() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User seller = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return itemRepository.findBySellerId(seller.getId())
                 .stream()
                 .map(this::mapToResponse)
                 .toList();
